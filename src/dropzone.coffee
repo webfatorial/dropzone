@@ -138,6 +138,7 @@ class Dropzone extends Emitter
     maxThumbnailFilesize: 10 # in MB. When the filename exceeds this limit, the thumbnail will not be generated.
     thumbnailWidth: 120
     thumbnailHeight: 120
+    overrideDefaultHeaders: false
 
     # The base that is used to calculate the filesize. You can change this to
     # 1024 if you would rather display kibibytes, mebibytes, etc...
@@ -1175,7 +1176,9 @@ class Dropzone extends Emitter
       "Cache-Control": "no-cache",
       "X-Requested-With": "XMLHttpRequest",
 
-    extend headers, @options.headers if @options.headers
+    extend headers, @options.headers if @options.headers and ! @options.overrideDefaultHeaders
+
+    headers = @options.headers if @options.headers and @options.overrideDefaultHeaders
 
     xhr.setRequestHeader headerName, headerValue for headerName, headerValue of headers
 

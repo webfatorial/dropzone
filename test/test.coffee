@@ -1578,10 +1578,17 @@ describe "Dropzone", ->
           requests.length.should.eql 2
           requests[1].withCredentials.should.eql yes
 
-        it "should correctly override headers on the xhr object", ->
+        it "should correctly set headers on the xhr object", ->
           dropzone.options.headers = {"Foo-Header": "foobar"}
           dropzone.uploadFile mockFile
           requests[0].requestHeaders["Foo-Header"].should.eql 'foobar'
+          (requests[0].requestHeaders["Accept"] == undefined).should.be.false
+
+        it "should correctly override headers on the xhr object", ->
+          dropzone.options.overrideDefaultHeaders = true
+          dropzone.options.headers = {"Foo-Header": "foobar"}
+          dropzone.uploadFile mockFile
+          (requests[0].requestHeaders["Accept"] == undefined).should.be.true
 
         it "should properly use the paramName without [n] as file upload if uploadMultiple is false", (done) ->
           dropzone.options.uploadMultiple = false

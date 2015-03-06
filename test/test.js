@@ -1784,12 +1784,21 @@
             requests.length.should.eql(2);
             return requests[1].withCredentials.should.eql(true);
           });
-          it("should correctly override headers on the xhr object", function() {
+          it("should correctly set headers on the xhr object", function() {
             dropzone.options.headers = {
               "Foo-Header": "foobar"
             };
             dropzone.uploadFile(mockFile);
-            return requests[0].requestHeaders["Foo-Header"].should.eql('foobar');
+            requests[0].requestHeaders["Foo-Header"].should.eql('foobar');
+            return (requests[0].requestHeaders["Accept"] === void 0).should.be["false"];
+          });
+          it("should correctly override headers on the xhr object", function() {
+            dropzone.options.overrideDefaultHeaders = true;
+            dropzone.options.headers = {
+              "Foo-Header": "foobar"
+            };
+            dropzone.uploadFile(mockFile);
+            return (requests[0].requestHeaders["Accept"] === void 0).should.be["true"];
           });
           it("should properly use the paramName without [n] as file upload if uploadMultiple is false", function(done) {
             var formData, mock1, mock2, sendingCount;

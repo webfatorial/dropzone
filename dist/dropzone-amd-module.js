@@ -137,6 +137,7 @@
       maxThumbnailFilesize: 10,
       thumbnailWidth: 120,
       thumbnailHeight: 120,
+      overrideDefaultHeaders: false,
       filesizeBase: 1000,
       maxFiles: null,
       filesizeBase: 1000,
@@ -1312,8 +1313,11 @@
         "Cache-Control": "no-cache",
         "X-Requested-With": "XMLHttpRequest"
       };
-      if (this.options.headers) {
+      if (this.options.headers && !this.options.overrideDefaultHeaders) {
         extend(headers, this.options.headers);
+      }
+      if (this.options.headers && this.options.overrideDefaultHeaders) {
+        headers = this.options.headers;
       }
       for (headerName in headers) {
         headerValue = headers[headerName];
